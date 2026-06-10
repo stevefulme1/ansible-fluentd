@@ -6,8 +6,6 @@ __metaclass__ = type
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 MODULE_PATH = "ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_gem_info"
 
 

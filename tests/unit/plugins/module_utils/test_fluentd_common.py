@@ -4,7 +4,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 

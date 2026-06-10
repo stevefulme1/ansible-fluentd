@@ -102,7 +102,7 @@ def get_package_version_deb(module, package_name):
 
 def get_os_family(module):
     """Determine OS family from ansible_os_family or os-release."""
-    rc, stdout, _ = module.run_command(["cat", "/etc/os-release"])
+    rc, stdout, stderr = module.run_command(["cat", "/etc/os-release"])
     if rc == 0:
         if re.search(r'ID_LIKE=.*(?:rhel|fedora|centos)', stdout):
             return "RedHat"

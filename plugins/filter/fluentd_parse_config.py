@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: (c) 2024, Steve Fulmer (@stevefulme1)
@@ -44,7 +43,7 @@ def _parse_block(lines, start, end):
             if close_idx is None:
                 i += 1
                 continue
-            children, _ = _parse_block(lines, i + 1, close_idx)
+            children, _end = _parse_block(lines, i + 1, close_idx)
             params = {}
             child_directives = []
             for child in children:
