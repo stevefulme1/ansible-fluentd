@@ -38,7 +38,6 @@ def _parse_block(lines, start, end):
         if match:
             directive_type = match.group(1)
             tag = match.group(2).strip() or None
-            close_tag = "</%s>" % directive_type
             close_idx = _find_closing(lines, i + 1, end, directive_type)
             if close_idx is None:
                 i += 1
