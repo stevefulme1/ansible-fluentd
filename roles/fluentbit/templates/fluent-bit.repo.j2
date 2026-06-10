@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+[fluent-bit]
+name=Fluent Bit
+baseurl={{ _fluentbit_repo_url }}
+gpgcheck=1
+gpgkey={{ _fluentbit_gpg_key }}
+enabled=1

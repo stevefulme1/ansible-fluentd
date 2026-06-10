@@ -1,0 +1,61 @@
+---
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Configure Fluent Bit repository (RedHat)
+  ansible.builtin.template:
+    src: fluent-bit.repo.j2
+    dest: "{{ _fluentbit_repo_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - fluentbit_manage_repo
+    - ansible_os_family == "RedHat"
+
+- name: Configure Fluent Bit repository (Debian)
+  when:
+    - fluentbit_manage_repo
+    - ansible_os_family == "Debian"
+  block:
+    - name: Add Fluent Bit GPG key
+      ansible.builtin.apt_key:
+        url: "{{ _fluentbit_gpg_key }}"
+        state: present
+
+    - name: Add Fluent Bit repository
+      ansible.builtin.apt_repository:
+        repo: "deb {{ _fluentbit_repo_url }} {{ ansible_distribution_release }} main"
+        state: present
+        filename: fluent-bit
+
+- name: Install Fluent Bit
+  stevefulme1.fluentd.fluentbit_install:
+    version: "{{ fluentbit_version | default(omit, true) }}"
+    state: present
+    manage_repo: false
+
+- name: Deploy Fluent Bit configuration
+  ansible.builtin.template:
+    src: fluent-bit.conf.j2
+    dest: "{{ fluentbit_config_path }}"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart fluent-bit
+
+- name: Deploy custom parsers configuration
+  ansible.builtin.template:
+    src: parsers.conf.j2
+    dest: "{{ fluentbit_parsers_file }}"
+    owner: root
+    group: root
+    mode: "0640"
+  when: fluentbit_custom_parsers | length > 0
+  notify: Restart fluent-bit
+
+- name: Ensure Fluent Bit service is in desired state
+  ansible.builtin.service:
+    name: "{{ fluentbit_service_name }}"
+    enabled: "{{ fluentbit_service_enabled }}"
+    state: "{{ fluentbit_service_state }}"

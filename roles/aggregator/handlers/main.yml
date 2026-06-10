@@ -1,0 +1,5 @@
+---
+- name: Restart fluentd aggregator
+  ansible.builtin.service:
+    name: "{{ fluentd_service_name }}"
+    state: restarted

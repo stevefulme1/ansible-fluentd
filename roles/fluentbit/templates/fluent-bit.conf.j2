@@ -1,0 +1,87 @@
+# {{ ansible_managed }}
+# Fluent Bit configuration
+
+[SERVICE]
+    Flush        {{ fluentbit_flush_interval }}
+    Log_Level    {{ fluentbit_log_level }}
+    Parsers_File {{ fluentbit_parsers_file }}
+    Daemon       off
+
+{% for input in fluentbit_inputs %}
+[INPUT]
+    Name         {{ input.name }}
+    Tag          {{ input.tag }}
+{% if input.path is defined %}
+    Path         {{ input.path }}
+{% endif %}
+{% if input.parser is defined %}
+    Parser       {{ input.parser }}
+{% endif %}
+{% if input.port is defined %}
+    Port         {{ input.port }}
+{% endif %}
+{% if input.listen is defined %}
+    Listen       {{ input.listen }}
+{% endif %}
+{% if input.mem_buf_limit is defined %}
+    Mem_Buf_Limit {{ input.mem_buf_limit }}
+{% endif %}
+{% if input.db is defined %}
+    DB           {{ input.db }}
+{% endif %}
+
+{% endfor %}
+{% for filter in fluentbit_filters %}
+[FILTER]
+    Name         {{ filter.name }}
+    Match        {{ filter.match }}
+{% if filter.regex is defined %}
+    Regex        {{ filter.regex }}
+{% endif %}
+{% if filter.record is defined %}
+    Record       {{ filter.record }}
+{% endif %}
+{% if filter.condition is defined %}
+    Condition    {{ filter.condition }}
+{% endif %}
+
+{% endfor %}
+{% for output in fluentbit_outputs %}
+[OUTPUT]
+    Name         {{ output.name }}
+    Match        {{ output.match }}
+{% if output.host is defined %}
+    Host         {{ output.host }}
+{% endif %}
+{% if output.port is defined %}
+    Port         {{ output.port }}
+{% endif %}
+{% if output.index is defined %}
+    Index        {{ output.index }}
+{% endif %}
+{% if output.tls is defined %}
+    tls          {{ output.tls }}
+{% endif %}
+{% if output.uri is defined %}
+    URI          {{ output.uri }}
+{% endif %}
+{% if output.format is defined %}
+    Format       {{ output.format }}
+{% endif %}
+{% if output.region is defined %}
+    region       {{ output.region }}
+{% endif %}
+{% if output.bucket is defined %}
+    bucket       {{ output.bucket }}
+{% endif %}
+{% if output.splunk_token is defined %}
+    Splunk_Token {{ output.splunk_token }}
+{% endif %}
+{% if output.brokers is defined %}
+    Brokers      {{ output.brokers }}
+{% endif %}
+{% if output.topics is defined %}
+    Topics       {{ output.topics }}
+{% endif %}
+
+{% endfor %}

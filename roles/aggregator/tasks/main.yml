@@ -1,0 +1,21 @@
+---
+- name: Install required aggregator plugins
+  stevefulme1.fluentd.fluentd_plugin:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+    state: present
+  loop: "{{ fluentd_aggregator_required_plugins }}"
+  when: fluentd_aggregator_required_plugins | length > 0
+
+- name: Deploy aggregator configuration
+  ansible.builtin.template:
+    src: aggregator.conf.j2
+    dest: "{{ fluentd_aggregator_config_path }}"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart fluentd aggregator
+
+- name: Validate aggregator configuration
+  stevefulme1.fluentd.fluentd_config_validate:
+    config_path: "{{ fluentd_aggregator_config_path }}"

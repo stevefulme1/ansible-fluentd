@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  role_name: fluentbit
+  author: Steve Fulmer (@stevefulme1)
+  description: Install and configure Fluent Bit
+  license: GPL-3.0-or-later
+  min_ansible_version: "2.16"
+  platforms:
+    - name: EL
+      versions: ["8", "9"]
+    - name: Debian
+      versions: [bullseye, bookworm]
+    - name: Ubuntu
+      versions: [jammy, noble]
+  galaxy_tags: [fluentbit, logging, observability, monitoring]
+dependencies: []

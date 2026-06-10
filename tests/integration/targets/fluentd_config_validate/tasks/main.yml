@@ -1,0 +1,37 @@
+---
+- name: Validate default config
+  stevefulme1.fluentd.fluentd_config_validate:
+    config_path: /etc/fluent/fluentd.conf
+  register: valid_result
+
+- name: Assert config is valid
+  ansible.builtin.assert:
+    that:
+      - valid_result.valid
+      - valid_result is not changed
+
+- name: Create a known-bad config
+  ansible.builtin.copy:
+    content: |
+      <source>
+        @type invalid_type_that_does_not_exist
+      </source>
+    dest: /tmp/bad_fluentd.conf
+    mode: "0644"
+
+- name: Validate bad config
+  stevefulme1.fluentd.fluentd_config_validate:
+    config_path: /tmp/bad_fluentd.conf
+  register: bad_result
+
+- name: Assert bad config is invalid
+  ansible.builtin.assert:
+    that:
+      - not bad_result.valid
+      - bad_result is not changed
+      - bad_result.errors | length > 0
+
+- name: Clean up bad config
+  ansible.builtin.file:
+    path: /tmp/bad_fluentd.conf
+    state: absent

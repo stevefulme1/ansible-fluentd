@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  role_name: forwarder
+  author: Steve Fulmer (@stevefulme1)
+  description: Configure Fluentd as a log forwarder
+  license: GPL-3.0-or-later
+  min_ansible_version: "2.16"
+  platforms:
+    - name: EL
+      versions: ["8", "9"]
+    - name: Debian
+      versions: [bullseye, bookworm]
+    - name: Ubuntu
+      versions: [jammy, noble]
+  galaxy_tags: [fluentd, logging, forwarder, logshipping]
+dependencies:
+  - role: stevefulme1.fluentd.install

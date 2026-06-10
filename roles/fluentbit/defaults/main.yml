@@ -1,0 +1,35 @@
+---
+fluentbit_package_name: fluent-bit
+fluentbit_version: ""
+fluentbit_manage_repo: true
+
+fluentbit_service_name: fluent-bit
+fluentbit_service_enabled: true
+fluentbit_service_state: started
+
+fluentbit_config_path: /etc/fluent-bit/fluent-bit.conf
+fluentbit_parsers_file: /etc/fluent-bit/parsers.conf
+fluentbit_log_level: info
+fluentbit_flush_interval: 5
+
+fluentbit_inputs:
+  - name: tail
+    tag: syslog
+    path: /var/log/syslog
+    parser: syslog-rfc3164
+
+fluentbit_filters: []
+# - name: grep
+#   match: "*"
+#   regex: "log error"
+
+fluentbit_outputs:
+  - name: stdout
+    match: "*"
+
+fluentbit_custom_parsers: []
+# - name: my_parser
+#   format: regex
+#   regex: "^(?<time>[^ ]+) (?<message>.+)$"
+#   time_key: time
+#   time_format: "%Y-%m-%dT%H:%M:%S"

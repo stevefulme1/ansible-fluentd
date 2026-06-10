@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+# Fluentd configuration - managed by stevefulme1.fluentd.install role
+
+<system>
+  log_level {{ fluentd_log_level }}
+  suppress_repeated_stacktrace {{ fluentd_suppress_repeated_stacktrace | lower }}
+  workers {{ fluentd_workers }}
+</system>
+
+# Include additional configuration files
+@include conf.d/*.conf

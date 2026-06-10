@@ -1,0 +1,13 @@
+---
+- name: Deploy forwarder configuration
+  ansible.builtin.template:
+    src: forwarder.conf.j2
+    dest: "{{ fluentd_forwarder_config_path }}"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart fluentd forwarder
+
+- name: Validate forwarder configuration
+  stevefulme1.fluentd.fluentd_config_validate:
+    config_path: "{{ fluentd_forwarder_config_path }}"

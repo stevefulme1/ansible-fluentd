@@ -1,0 +1,39 @@
+---
+namespace: stevefulme1
+name: fluentd
+version: 0.1.0
+readme: README.md
+authors:
+  - Steve Fulmer (@stevefulme1)
+
+description: >-
+  Ansible collection for Fluentd and Fluent Bit log collectors — install,
+  configure, manage plugins, and deploy forwarder/aggregator patterns.
+  Status: Pre-release.
+license_file: LICENSE
+
+tags:
+  - fluentd
+  - fluentbit
+  - logging
+  - observability
+  - monitoring
+  - logcollector
+
+dependencies:
+  "ansible.utils": "*"
+
+repository: https://github.com/stevefulme1/ansible-fluentd
+documentation: https://github.com/stevefulme1/ansible-fluentd
+homepage: https://github.com/stevefulme1/ansible-fluentd
+issues: https://github.com/stevefulme1/ansible-fluentd/issues
+
+build_ignore:
+  - .github
+  - tests
+  - .gitignore
+  - .ansible-lint
+  - .yamllint
+  - docs
+  - "*.tar.gz"
+  - changelogs/.plugin-cache.yaml

@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+[fluent-package]
+name=Fluent Package
+baseurl={{ _fluentd_repo_url }}
+gpgcheck=1
+gpgkey={{ _fluentd_gpg_key }}
+enabled=1

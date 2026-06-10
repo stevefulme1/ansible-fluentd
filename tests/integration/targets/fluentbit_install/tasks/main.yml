@@ -1,0 +1,52 @@
+---
+- name: Install fluent-bit (check mode)
+  stevefulme1.fluentd.fluentbit_install:
+    state: present
+  check_mode: true
+  register: check_result
+
+- name: Assert check mode reports changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Install fluent-bit
+  stevefulme1.fluentd.fluentbit_install:
+    state: present
+  register: install_result
+
+- name: Assert install changed
+  ansible.builtin.assert:
+    that:
+      - install_result is changed
+      - install_result.package == "fluent-bit"
+
+- name: Install fluent-bit again (idempotency)
+  stevefulme1.fluentd.fluentbit_install:
+    state: present
+  register: idem_result
+
+- name: Assert idempotent
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Remove fluent-bit
+  stevefulme1.fluentd.fluentbit_install:
+    state: absent
+  register: remove_result
+
+- name: Assert remove changed
+  ansible.builtin.assert:
+    that:
+      - remove_result is changed
+
+- name: Remove fluent-bit again (idempotency)
+  stevefulme1.fluentd.fluentbit_install:
+    state: absent
+  register: remove_idem
+
+- name: Assert remove idempotent
+  ansible.builtin.assert:
+    that:
+      - remove_idem is not changed

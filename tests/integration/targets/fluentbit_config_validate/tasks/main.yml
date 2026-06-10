@@ -1,0 +1,35 @@
+---
+- name: Validate default fluent-bit config
+  stevefulme1.fluentd.fluentbit_config_validate:
+    config_path: /etc/fluent-bit/fluent-bit.conf
+  register: valid_result
+
+- name: Assert config is valid
+  ansible.builtin.assert:
+    that:
+      - valid_result.valid
+      - valid_result is not changed
+
+- name: Create a known-bad config
+  ansible.builtin.copy:
+    content: |
+      [INPUT]
+          Name invalid_plugin_does_not_exist
+    dest: /tmp/bad_fluentbit.conf
+    mode: "0644"
+
+- name: Validate bad config
+  stevefulme1.fluentd.fluentbit_config_validate:
+    config_path: /tmp/bad_fluentbit.conf
+  register: bad_result
+
+- name: Assert bad config is invalid
+  ansible.builtin.assert:
+    that:
+      - not bad_result.valid
+      - bad_result is not changed
+
+- name: Clean up bad config
+  ansible.builtin.file:
+    path: /tmp/bad_fluentbit.conf
+    state: absent

@@ -1,0 +1,21 @@
+---
+fluentd_aggregator_config_path: /etc/fluent/fluentd.conf
+
+fluentd_aggregator_listen_port: 24224
+fluentd_aggregator_bind: 0.0.0.0
+
+fluentd_aggregator_outputs:
+  - tag: "**"
+    type: stdout
+
+fluentd_aggregator_buffer_type: file
+fluentd_aggregator_buffer_path: /var/log/fluentd/buffer
+fluentd_aggregator_flush_interval: 10s
+
+fluentd_aggregator_monitor_enabled: true
+fluentd_aggregator_monitor_port: 24220
+
+fluentd_aggregator_required_plugins: []
+# - name: fluent-plugin-elasticsearch
+
+fluentd_service_name: fluentd

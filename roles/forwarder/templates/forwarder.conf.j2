@@ -1,0 +1,44 @@
+# {{ ansible_managed }}
+# Fluentd forwarder configuration
+
+<system>
+  log_level info
+</system>
+
+{% for source in fluentd_forwarder_sources %}
+<source>
+  @type {{ source.type }}
+  tag {{ source.tag }}
+{% if source.type == 'tail' %}
+  path {{ source.path }}
+  pos_file {{ source.pos_file }}
+  <parse>
+    @type {{ source.parse_type | default('none') }}
+  </parse>
+{% endif %}
+{% if source.type == 'syslog' %}
+  port {{ source.port | default(5140) }}
+  bind {{ source.bind | default('0.0.0.0') }}
+{% endif %}
+</source>
+
+{% endfor %}
+<match **>
+  @type forward
+
+  <server>
+    host {{ fluentd_forwarder_aggregator_host }}
+    port {{ fluentd_forwarder_aggregator_port }}
+  </server>
+
+  heartbeat_type {{ fluentd_forwarder_heartbeat_type }}
+
+  <buffer>
+    @type {{ fluentd_forwarder_buffer_type }}
+{% if fluentd_forwarder_buffer_type == 'file' %}
+    path {{ fluentd_forwarder_buffer_path }}
+{% endif %}
+    flush_interval {{ fluentd_forwarder_flush_interval }}
+    retry_max_times {{ fluentd_forwarder_retry_max_times }}
+  </buffer>
+</match>

@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+# Custom Fluent Bit parsers
+
+{% for parser in fluentbit_custom_parsers %}
+[PARSER]
+    Name         {{ parser.name }}
+    Format       {{ parser.format }}
+{% if parser.regex is defined %}
+    Regex        {{ parser.regex }}
+{% endif %}
+{% if parser.time_key is defined %}
+    Time_Key     {{ parser.time_key }}
+{% endif %}
+{% if parser.time_format is defined %}
+    Time_Format  {{ parser.time_format }}
+{% endif %}
+
+{% endfor %}

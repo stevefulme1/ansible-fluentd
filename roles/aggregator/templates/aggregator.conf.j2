@@ -1,0 +1,81 @@
+# {{ ansible_managed }}
+# Fluentd aggregator configuration
+
+<system>
+  log_level info
+</system>
+
+{% if fluentd_aggregator_monitor_enabled %}
+<source>
+  @type monitor_agent
+  bind 0.0.0.0
+  port {{ fluentd_aggregator_monitor_port }}
+</source>
+{% endif %}
+
+<source>
+  @type forward
+  port {{ fluentd_aggregator_listen_port }}
+  bind {{ fluentd_aggregator_bind }}
+</source>
+
+{% for output in fluentd_aggregator_outputs %}
+<match {{ output.tag }}>
+  @type {{ output.type }}
+{% if output.type == 'elasticsearch' %}
+  host {{ output.host | default('localhost') }}
+  port {{ output.port | default(9200) }}
+  index_name {{ output.index_name | default('fluentd') }}
+  type_name {{ output.type_name | default('_doc') }}
+{% if output.user is defined %}
+  user {{ output.user }}
+  password {{ output.password }}
+{% endif %}
+{% if output.scheme is defined %}
+  scheme {{ output.scheme }}
+{% endif %}
+{% elif output.type == 's3' %}
+  s3_bucket {{ output.s3_bucket }}
+  s3_region {{ output.s3_region | default('us-east-1') }}
+{% if output.s3_object_key_format is defined %}
+  s3_object_key_format {{ output.s3_object_key_format }}
+{% endif %}
+{% if output.path is defined %}
+  path {{ output.path }}
+{% endif %}
+{% elif output.type == 'kafka2' or output.type == 'kafka' %}
+  brokers {{ output.brokers }}
+  default_topic {{ output.topic | default('fluentd') }}
+{% if output.use_event_time is defined %}
+  use_event_time {{ output.use_event_time | lower }}
+{% endif %}
+{% elif output.type == 'cloudwatch_logs' %}
+  log_group_name {{ output.log_group_name }}
+  log_stream_name {{ output.log_stream_name | default('fluentd') }}
+  region {{ output.region | default('us-east-1') }}
+  auto_create_stream {{ output.auto_create_stream | default(true) | lower }}
+{% elif output.type == 'splunk_hec' %}
+  hec_host {{ output.hec_host }}
+  hec_port {{ output.hec_port | default(8088) }}
+  hec_token {{ output.hec_token }}
+{% if output.index is defined %}
+  index {{ output.index }}
+{% endif %}
+{% if output.insecure_ssl is defined %}
+  insecure_ssl {{ output.insecure_ssl | lower }}
+{% endif %}
+{% elif output.type == 'stdout' %}
+{% endif %}
+{% if output.type != 'stdout' %}
+
+  <buffer>
+    @type {{ fluentd_aggregator_buffer_type }}
+{% if fluentd_aggregator_buffer_type == 'file' %}
+    path {{ fluentd_aggregator_buffer_path }}/{{ output.tag | replace('*', '_') }}
+{% endif %}
+    flush_interval {{ fluentd_aggregator_flush_interval }}
+  </buffer>
+{% endif %}
+</match>
+
+{% endfor %}

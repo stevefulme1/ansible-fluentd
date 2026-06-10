@@ -1,0 +1,43 @@
+---
+# extensions/audit/event_query.yml
+# Maps module return values to the AAP Normalized Resource Taxonomy
+# for indirect node counting.
+#
+# Fluentd modules manage log collector infrastructure. Each installed
+# package or plugin represents a managed node in the logging pipeline.
+
+stevefulme1.fluentd.fluentd_install:
+  query: >-
+    {
+      name: .package,
+      canonical_facts: {
+        uuid: (.package + ":" + .installed_version)
+      },
+      facts: {
+        device_type: "container"
+      }
+    }
+
+stevefulme1.fluentd.fluentd_plugin:
+  query: >-
+    {
+      name: .name,
+      canonical_facts: {
+        uuid: (.name + ":" + .version)
+      },
+      facts: {
+        device_type: "container"
+      }
+    }
+
+stevefulme1.fluentd.fluentbit_install:
+  query: >-
+    {
+      name: .package,
+      canonical_facts: {
+        uuid: (.package + ":" + .installed_version)
+      },
+      facts: {
+        device_type: "container"
+      }
+    }

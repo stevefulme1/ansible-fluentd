@@ -1,0 +1,22 @@
+---
+- name: Fluentd Webhook Event Handler
+  hosts: all
+  sources:
+    - stevefulme1.fluentd.fluentd_webhook:
+        host: "0.0.0.0"
+        port: 5000
+
+  rules:
+    - name: Handle security events
+      condition: event.fluentd_webhook.tag is match(".*security.*")
+      action:
+        run_playbook:
+          name: investigate_security.yml
+
+    - name: Alert on error patterns
+      condition: event.fluentd_webhook.record.level is defined and event.fluentd_webhook.record.level == "error"
+      action:
+        debug:
+          msg: >-
+            Error detected: {{ event.fluentd_webhook.record.message | default('no message') }}
+            from tag {{ event.fluentd_webhook.tag | default('unknown') }}

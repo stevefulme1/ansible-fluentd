@@ -1,0 +1,4 @@
+---
+_fluentd_repo_url: "https://packages.treasuredata.com/lts/5/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}/"
+_fluentd_gpg_key: "https://packages.treasuredata.com/GPG-KEY-td-agent"
+_fluentd_repo_file: "/etc/apt/sources.list.d/fluent-package.list"

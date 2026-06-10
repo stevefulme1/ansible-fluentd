@@ -1,0 +1,23 @@
+---
+- name: List all plugins
+  stevefulme1.fluentd.fluentd_gem_info:
+  register: all_result
+
+- name: Assert plugins is a list
+  ansible.builtin.assert:
+    that:
+      - all_result.plugins is defined
+      - all_result.plugins is iterable
+      - all_result is not changed
+      - all_result.fluentd_version is defined
+
+- name: Filter by non-existent plugin
+  stevefulme1.fluentd.fluentd_gem_info:
+    name: fluent-plugin-nonexistent
+  register: empty_result
+
+- name: Assert empty result
+  ansible.builtin.assert:
+    that:
+      - empty_result.plugins | length == 0
+      - empty_result is not changed

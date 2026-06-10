@@ -1,0 +1,31 @@
+---
+- name: Fluentd Alert Remediation
+  hosts: all
+  sources:
+    - stevefulme1.fluentd.fluentd_monitor:
+        api_url: "{{ lookup('env', 'FLUENTD_MONITOR_URL') | default('http://localhost:24220', true) }}"
+        interval: 30
+        retry_threshold: 5
+        buffer_threshold: 200
+
+  rules:
+    - name: Restart fluentd on buffer overflow
+      condition: event.fluentd_monitor.event_type == "buffer_overflow"
+      action:
+        run_playbook:
+          name: stevefulme1.fluentd.restart_fluentd
+
+    - name: Restart fluentd on retry exceeded
+      condition: event.fluentd_monitor.event_type == "retry_exceeded"
+      action:
+        run_playbook:
+          name: stevefulme1.fluentd.restart_fluentd
+
+    - name: Alert on plugin retry
+      condition: event.fluentd_monitor.event_type == "plugin_retry"
+      action:
+        debug:
+          msg: >-
+            Plugin {{ event.fluentd_monitor.plugin_id }}
+            ({{ event.fluentd_monitor.plugin_type }}) is retrying
+            (step {{ event.fluentd_monitor.retry_steps }}).

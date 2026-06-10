@@ -1,0 +1,67 @@
+---
+- name: Install plugin (check mode)
+  stevefulme1.fluentd.fluentd_plugin:
+    name: fluent-plugin-rewrite-tag-filter
+    state: present
+  check_mode: true
+  register: check_result
+
+- name: Assert check mode changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Install plugin
+  stevefulme1.fluentd.fluentd_plugin:
+    name: fluent-plugin-rewrite-tag-filter
+    state: present
+  register: install_result
+
+- name: Assert install changed
+  ansible.builtin.assert:
+    that:
+      - install_result is changed
+      - install_result.name == "fluent-plugin-rewrite-tag-filter"
+
+- name: Install plugin again (idempotency)
+  stevefulme1.fluentd.fluentd_plugin:
+    name: fluent-plugin-rewrite-tag-filter
+    state: present
+  register: idem_result
+
+- name: Assert idempotent
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Verify plugin with gem_info
+  stevefulme1.fluentd.fluentd_gem_info:
+    name: fluent-plugin-rewrite-tag-filter
+  register: info_result
+
+- name: Assert plugin found
+  ansible.builtin.assert:
+    that:
+      - info_result.plugins | length == 1
+
+- name: Remove plugin
+  stevefulme1.fluentd.fluentd_plugin:
+    name: fluent-plugin-rewrite-tag-filter
+    state: absent
+  register: remove_result
+
+- name: Assert remove changed
+  ansible.builtin.assert:
+    that:
+      - remove_result is changed
+
+- name: Remove plugin again (idempotency)
+  stevefulme1.fluentd.fluentd_plugin:
+    name: fluent-plugin-rewrite-tag-filter
+    state: absent
+  register: remove_idem
+
+- name: Assert remove idempotent
+  ansible.builtin.assert:
+    that:
+      - remove_idem is not changed

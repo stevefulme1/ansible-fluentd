@@ -1,0 +1,31 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check fluentd service is running
+      ansible.builtin.service_facts:
+
+    - name: Assert fluentd service is active
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['fluentd.service'].state == 'running'
+
+    - name: Check config file exists
+      ansible.builtin.stat:
+        path: /etc/fluent/fluentd.conf
+      register: config_stat
+
+    - name: Assert config exists
+      ansible.builtin.assert:
+        that:
+          - config_stat.stat.exists
+
+    - name: Validate config
+      stevefulme1.fluentd.fluentd_config_validate:
+        config_path: /etc/fluent/fluentd.conf
+      register: validate_result
+
+    - name: Assert config is valid
+      ansible.builtin.assert:
+        that:
+          - validate_result.valid
