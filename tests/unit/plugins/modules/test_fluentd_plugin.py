@@ -39,7 +39,9 @@ class TestFluentdPlugin:
         module = self._make_module(mock_ansible)
         module.run_command.return_value = (0, PLUGIN_LIST_OUTPUT, "")
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -56,7 +58,9 @@ class TestFluentdPlugin:
             (0, PLUGIN_LIST_OUTPUT, ""),  # gem list --local (after install)
         ]
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -71,7 +75,9 @@ class TestFluentdPlugin:
             (0, "removed", ""),  # gem uninstall
         ]
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -83,7 +89,9 @@ class TestFluentdPlugin:
         module = self._make_module(mock_ansible, state="absent")
         module.run_command.return_value = (0, EMPTY_LIST_OUTPUT, "")
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -96,7 +104,9 @@ class TestFluentdPlugin:
         module.check_mode = True
         module.run_command.return_value = (0, EMPTY_LIST_OUTPUT, "")
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_plugin import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()

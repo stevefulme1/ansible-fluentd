@@ -37,7 +37,9 @@ class TestFluentdInstall:
         module = self._make_module(mock_ansible)
         module.run_command.return_value = (0, "5.0.4", "")
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -53,7 +55,9 @@ class TestFluentdInstall:
             (0, "5.0.4", ""),  # rpm -q after install
         ]
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -68,7 +72,9 @@ class TestFluentdInstall:
             (0, "", ""),  # dnf remove
         ]
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -80,7 +86,9 @@ class TestFluentdInstall:
         module = self._make_module(mock_ansible, state="absent")
         module.run_command.return_value = (1, "", "not installed")
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -93,7 +101,9 @@ class TestFluentdInstall:
         module.check_mode = True
         module.run_command.return_value = (1, "", "not installed")
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()

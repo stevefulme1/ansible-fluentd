@@ -43,7 +43,9 @@ def find_fluentd_binary(module):
     if found:
         return found
 
-    module.fail_json(msg="Unable to find fluentd binary. Install fluent-package or set fluentd_bin.")
+    module.fail_json(
+        msg="Unable to find fluentd binary. Install fluent-package or set fluentd_bin."
+    )
     return None
 
 
@@ -62,7 +64,9 @@ def find_gem_binary(module):
     if found:
         return found
 
-    module.fail_json(msg="Unable to find fluent-gem binary. Install fluent-package or set gem_bin.")
+    module.fail_json(
+        msg="Unable to find fluent-gem binary. Install fluent-package or set gem_bin."
+    )
     return None
 
 
@@ -84,7 +88,9 @@ def find_fluentbit_binary(module):
     if found:
         return found
 
-    module.fail_json(msg="Unable to find fluent-bit binary. Install fluent-bit or set fluentbit_bin.")
+    module.fail_json(
+        msg="Unable to find fluent-bit binary. Install fluent-bit or set fluentbit_bin."
+    )
     return None
 
 

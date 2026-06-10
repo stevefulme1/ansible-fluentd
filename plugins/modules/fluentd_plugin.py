@@ -94,7 +94,9 @@ def main():
     spec.update(
         dict(
             name=dict(type="str", required=True),
-            state=dict(type="str", default="present", choices=["present", "absent", "latest"]),
+            state=dict(
+                type="str", default="present", choices=["present", "absent", "latest"]
+            ),
             version=dict(type="str"),
             gem_bin=dict(type="path"),
         )

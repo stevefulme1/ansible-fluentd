@@ -21,13 +21,22 @@ MODULE_PATH = "ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_g
     ],
 )
 class TestFluentdGemInfo:
-    def test_list_all_plugins(self, mock_plugins, mock_ver, mock_fd, mock_gem, mock_ansible):
+    def test_list_all_plugins(
+        self, mock_plugins, mock_ver, mock_fd, mock_gem, mock_ansible
+    ):
         module = MagicMock()
-        module.params = {"config_path": None, "fluentd_bin": None, "name": None, "gem_bin": None}
+        module.params = {
+            "config_path": None,
+            "fluentd_bin": None,
+            "name": None,
+            "gem_bin": None,
+        }
         module.check_mode = False
         mock_ansible.return_value = module
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_gem_info import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_gem_info import (
+            main,
+        )
 
         main()
 
@@ -37,13 +46,22 @@ class TestFluentdGemInfo:
         assert len(call_kwargs["plugins"]) == 2
         assert call_kwargs["fluentd_version"] == "1.16.5"
 
-    def test_filter_by_name(self, mock_plugins, mock_ver, mock_fd, mock_gem, mock_ansible):
+    def test_filter_by_name(
+        self, mock_plugins, mock_ver, mock_fd, mock_gem, mock_ansible
+    ):
         module = MagicMock()
-        module.params = {"config_path": None, "fluentd_bin": None, "name": "fluent-plugin-s3", "gem_bin": None}
+        module.params = {
+            "config_path": None,
+            "fluentd_bin": None,
+            "name": "fluent-plugin-s3",
+            "gem_bin": None,
+        }
         module.check_mode = False
         mock_ansible.return_value = module
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_gem_info import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentd_gem_info import (
+            main,
+        )
 
         main()
 

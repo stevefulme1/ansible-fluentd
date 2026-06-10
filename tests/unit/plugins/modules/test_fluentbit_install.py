@@ -8,7 +8,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-MODULE_PATH = "ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install"
+MODULE_PATH = (
+    "ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install"
+)
 
 
 @patch(f"{MODULE_PATH}.AnsibleModule")
@@ -34,7 +36,9 @@ class TestFluentbitInstall:
         module = self._make_module(mock_ansible)
         module.run_command.return_value = (0, "3.0.4", "")
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -50,7 +54,9 @@ class TestFluentbitInstall:
             (0, "3.0.4", ""),
         ]
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -65,7 +71,9 @@ class TestFluentbitInstall:
             (0, "", ""),
         ]
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()
@@ -77,7 +85,9 @@ class TestFluentbitInstall:
         module = self._make_module(mock_ansible, state="absent")
         module.run_command.return_value = (1, "", "not installed")
 
-        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install import main
+        from ansible_collections.stevefulme1.fluentd.plugins.modules.fluentbit_install import (
+            main,
+        )
 
         with pytest.raises(SystemExit):
             main()

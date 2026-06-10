@@ -104,9 +104,11 @@ def get_os_family(module):
     """Determine OS family from ansible_os_family or os-release."""
     rc, stdout, stderr = module.run_command(["cat", "/etc/os-release"])
     if rc == 0:
-        if re.search(r'ID_LIKE=.*(?:rhel|fedora|centos)', stdout):
+        if re.search(r"ID_LIKE=.*(?:rhel|fedora|centos)", stdout):
             return "RedHat"
-        if re.search(r'ID_LIKE=.*debian', stdout) or re.search(r'ID=(?:debian|ubuntu)', stdout):
+        if re.search(r"ID_LIKE=.*debian", stdout) or re.search(
+            r"ID=(?:debian|ubuntu)", stdout
+        ):
             return "Debian"
     if module.get_bin_path("rpm"):
         return "RedHat"
@@ -161,9 +163,15 @@ def main():
     spec = fluentd_argument_spec()
     spec.update(
         dict(
-            state=dict(type="str", default="present", choices=["present", "absent", "latest"]),
+            state=dict(
+                type="str", default="present", choices=["present", "absent", "latest"]
+            ),
             version=dict(type="str"),
-            package_name=dict(type="str", default="fluent-package", choices=["fluent-package", "td-agent"]),
+            package_name=dict(
+                type="str",
+                default="fluent-package",
+                choices=["fluent-package", "td-agent"],
+            ),
             manage_repo=dict(type="bool", default=True),
         )
     )
@@ -188,20 +196,32 @@ def main():
     if state == "present":
         if current_version is not None:
             if version is None or current_version == version:
-                module.exit_json(changed=False, package=package_name, installed_version=current_version)
+                module.exit_json(
+                    changed=False,
+                    package=package_name,
+                    installed_version=current_version,
+                )
         if module.check_mode:
             module.exit_json(changed=True, package=package_name)
         install_package(module, package_name, version, os_family)
         new_version = get_package_version(module, package_name, os_family)
-        module.exit_json(changed=True, package=package_name, installed_version=new_version)
+        module.exit_json(
+            changed=True, package=package_name, installed_version=new_version
+        )
 
     if state == "latest":
         if module.check_mode:
-            module.exit_json(changed=current_version is None, package=package_name, installed_version=current_version)
+            module.exit_json(
+                changed=current_version is None,
+                package=package_name,
+                installed_version=current_version,
+            )
         install_package(module, package_name, None, os_family)
         new_version = get_package_version(module, package_name, os_family)
         changed = new_version != current_version
-        module.exit_json(changed=changed, package=package_name, installed_version=new_version)
+        module.exit_json(
+            changed=changed, package=package_name, installed_version=new_version
+        )
 
 
 if __name__ == "__main__":
