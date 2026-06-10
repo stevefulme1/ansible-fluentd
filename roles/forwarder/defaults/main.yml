@@ -1,20 +1,20 @@
 ---
-fluentd_forwarder_config_path: /etc/fluent/fluentd.conf
+forwarder_config_path: /etc/fluent/fluentd.conf
 
-fluentd_forwarder_sources:
+forwarder_sources:
   - tag: "system.syslog"
     type: tail
     path: /var/log/syslog
     pos_file: /var/log/fluentd/syslog.pos
     parse_type: syslog
 
-fluentd_forwarder_aggregator_host: localhost
-fluentd_forwarder_aggregator_port: 24224
-fluentd_forwarder_heartbeat_type: tcp
+forwarder_aggregator_host: localhost
+forwarder_aggregator_port: 24224
+forwarder_heartbeat_type: tcp
 
-fluentd_forwarder_buffer_type: file
-fluentd_forwarder_buffer_path: /var/log/fluentd/buffer
-fluentd_forwarder_flush_interval: 5s
-fluentd_forwarder_retry_max_times: 10
+forwarder_buffer_type: file
+forwarder_buffer_path: /var/log/fluentd/buffer
+forwarder_flush_interval: 5s
+forwarder_retry_max_times: 10
 
-fluentd_service_name: fluentd
+forwarder_service_name: fluentd

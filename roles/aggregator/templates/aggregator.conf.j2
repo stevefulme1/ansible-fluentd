@@ -5,21 +5,21 @@
   log_level info
 </system>
 
-{% if fluentd_aggregator_monitor_enabled %}
+{% if aggregator_monitor_enabled %}
 <source>
   @type monitor_agent
   bind 0.0.0.0
-  port {{ fluentd_aggregator_monitor_port }}
+  port {{ aggregator_monitor_port }}
 </source>
 {% endif %}
 
 <source>
   @type forward
-  port {{ fluentd_aggregator_listen_port }}
-  bind {{ fluentd_aggregator_bind }}
+  port {{ aggregator_listen_port }}
+  bind {{ aggregator_bind }}
 </source>
 
-{% for output in fluentd_aggregator_outputs %}
+{% for output in aggregator_outputs %}
 <match {{ output.tag }}>
   @type {{ output.type }}
 {% if output.type == 'elasticsearch' %}
@@ -69,11 +69,11 @@
 {% if output.type != 'stdout' %}
 
   <buffer>
-    @type {{ fluentd_aggregator_buffer_type }}
-{% if fluentd_aggregator_buffer_type == 'file' %}
-    path {{ fluentd_aggregator_buffer_path }}/{{ output.tag | replace('*', '_') }}
+    @type {{ aggregator_buffer_type }}
+{% if aggregator_buffer_type == 'file' %}
+    path {{ aggregator_buffer_path }}/{{ output.tag | replace('*', '_') }}
 {% endif %}
-    flush_interval {{ fluentd_aggregator_flush_interval }}
+    flush_interval {{ aggregator_flush_interval }}
   </buffer>
 {% endif %}
 </match>

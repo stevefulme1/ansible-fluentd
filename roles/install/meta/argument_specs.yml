@@ -3,44 +3,44 @@ argument_specs:
   main:
     short_description: Install and configure Fluentd
     options:
-      fluentd_package_name:
+      install_package_name:
         type: str
         default: fluent-package
         description: Package to install (fluent-package or td-agent).
-      fluentd_version:
+      install_version:
         type: str
         default: ""
         description: Pin to a specific package version.
-      fluentd_manage_repo:
+      install_manage_repo:
         type: bool
         default: true
         description: Configure the official Treasure Data repository.
-      fluentd_service_name:
+      install_service_name:
         type: str
         default: fluentd
         description: Name of the systemd service.
-      fluentd_service_enabled:
+      install_service_enabled:
         type: bool
         default: true
         description: Enable the service at boot.
-      fluentd_service_state:
+      install_service_state:
         type: str
         default: started
         description: Desired service state.
-      fluentd_config_path:
+      install_config_path:
         type: str
         default: /etc/fluent/fluentd.conf
         description: Path to the main configuration file.
-      fluentd_plugins:
+      install_plugins:
         type: list
         elements: dict
         default: []
         description: List of plugins to install via fluent-gem.
-      fluentd_log_level:
+      install_log_level:
         type: str
         default: info
         description: Fluentd log level.
-      fluentd_workers:
+      install_workers:
         type: int
         default: 1
         description: Number of fluentd worker processes.

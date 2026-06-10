@@ -1,5 +1,5 @@
 ---
 - name: Restart fluentd forwarder
   ansible.builtin.service:
-    name: "{{ fluentd_service_name }}"
+    name: "{{ forwarder_service_name }}"
     state: restarted

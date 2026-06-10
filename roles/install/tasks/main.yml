@@ -5,34 +5,34 @@
 - name: Configure Fluentd repository (RedHat)
   ansible.builtin.template:
     src: fluent-package.repo.j2
-    dest: "{{ _fluentd_repo_file }}"
+    dest: "{{ install__repo_file }}"
     owner: root
     group: root
     mode: "0644"
   when:
-    - fluentd_manage_repo
+    - install_manage_repo
     - ansible_os_family == "RedHat"
 
 - name: Configure Fluentd repository (Debian)
   when:
-    - fluentd_manage_repo
+    - install_manage_repo
     - ansible_os_family == "Debian"
   block:
     - name: Add Treasure Data GPG key
       ansible.builtin.apt_key:
-        url: "{{ _fluentd_gpg_key }}"
+        url: "{{ install__gpg_key }}"
         state: present
 
     - name: Add Treasure Data repository
       ansible.builtin.apt_repository:
-        repo: "deb {{ _fluentd_repo_url }} {{ ansible_distribution_release }} contrib"
+        repo: "deb {{ install__repo_url }} {{ ansible_distribution_release }} contrib"
         state: present
         filename: fluent-package
 
 - name: Install Fluentd package
   stevefulme1.fluentd.fluentd_install:
-    package_name: "{{ fluentd_package_name }}"
-    version: "{{ fluentd_version | default(omit, true) }}"
+    package_name: "{{ install_package_name }}"
+    version: "{{ install_version | default(omit, true) }}"
     state: present
     manage_repo: false
 
@@ -41,21 +41,21 @@
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
     state: present
-  loop: "{{ fluentd_plugins }}"
-  when: fluentd_plugins | length > 0
+  loop: "{{ install_plugins }}"
+  when: install_plugins | length > 0
 
 - name: Deploy Fluentd configuration
   ansible.builtin.template:
-    src: "{{ fluentd_config_template }}"
-    dest: "{{ fluentd_config_path }}"
-    owner: "{{ fluentd_user }}"
-    group: "{{ fluentd_group }}"
+    src: "{{ install_config_template }}"
+    dest: "{{ install_config_path }}"
+    owner: "{{ install_user }}"
+    group: "{{ install_group }}"
     mode: "0640"
     validate: "{{ fluentd_bin | default('/usr/sbin/fluentd') }} --dry-run -c %s"
   notify: Restart fluentd
 
 - name: Ensure Fluentd service is in desired state
   ansible.builtin.service:
-    name: "{{ fluentd_service_name }}"
-    enabled: "{{ fluentd_service_enabled }}"
-    state: "{{ fluentd_service_state }}"
+    name: "{{ install_service_name }}"
+    enabled: "{{ install_service_enabled }}"
+    state: "{{ install_service_state }}"

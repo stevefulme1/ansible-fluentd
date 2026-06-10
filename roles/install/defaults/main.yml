@@ -1,21 +1,21 @@
 ---
-fluentd_package_name: fluent-package
-fluentd_version: ""
-fluentd_manage_repo: true
+install_package_name: fluent-package
+install_version: ""
+install_manage_repo: true
 
-fluentd_service_name: fluentd
-fluentd_service_enabled: true
-fluentd_service_state: started
+install_service_name: fluentd
+install_service_enabled: true
+install_service_state: started
 
-fluentd_config_path: /etc/fluent/fluentd.conf
-fluentd_config_template: fluentd.conf.j2
-fluentd_user: _fluentd
-fluentd_group: _fluentd
+install_config_path: /etc/fluent/fluentd.conf
+install_config_template: fluentd.conf.j2
+install_user: _fluentd
+install_group: _fluentd
 
-fluentd_plugins: []
+install_plugins: []
 # - name: fluent-plugin-elasticsearch
 #   version: "5.4.3"
 
-fluentd_log_level: info
-fluentd_suppress_repeated_stacktrace: true
-fluentd_workers: 1
+install_log_level: info
+install_suppress_repeated_stacktrace: true
+install_workers: 1

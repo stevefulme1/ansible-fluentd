@@ -5,7 +5,7 @@
   log_level info
 </system>
 
-{% for source in fluentd_forwarder_sources %}
+{% for source in forwarder_sources %}
 <source>
   @type {{ source.type }}
   tag {{ source.tag }}
@@ -27,18 +27,18 @@
   @type forward
 
   <server>
-    host {{ fluentd_forwarder_aggregator_host }}
-    port {{ fluentd_forwarder_aggregator_port }}
+    host {{ forwarder_aggregator_host }}
+    port {{ forwarder_aggregator_port }}
   </server>
 
-  heartbeat_type {{ fluentd_forwarder_heartbeat_type }}
+  heartbeat_type {{ forwarder_heartbeat_type }}
 
   <buffer>
-    @type {{ fluentd_forwarder_buffer_type }}
-{% if fluentd_forwarder_buffer_type == 'file' %}
-    path {{ fluentd_forwarder_buffer_path }}
+    @type {{ forwarder_buffer_type }}
+{% if forwarder_buffer_type == 'file' %}
+    path {{ forwarder_buffer_path }}
 {% endif %}
-    flush_interval {{ fluentd_forwarder_flush_interval }}
-    retry_max_times {{ fluentd_forwarder_retry_max_times }}
+    flush_interval {{ forwarder_flush_interval }}
+    retry_max_times {{ forwarder_retry_max_times }}
   </buffer>
 </match>
